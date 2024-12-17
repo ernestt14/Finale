@@ -3,7 +3,7 @@ package com.example.finale;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,15 +14,11 @@ import java.util.List;
 public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHolder> {
 
     private List<Subject> subjectList;
-    private OnSubjectCheckedListener listener;
+    private EnrollActivity activity;
 
-    public interface OnSubjectCheckedListener {
-        void onSubjectCheckedChange(Subject subject, boolean isChecked);
-    }
-
-    public SubjectAdapter(List<Subject> subjectList, OnSubjectCheckedListener listener) {
+    public SubjectAdapter(List<Subject> subjectList, EnrollActivity activity) {
         this.subjectList = subjectList;
-        this.listener = listener;
+        this.activity = activity;
     }
 
     @NonNull
@@ -37,17 +33,24 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Subject subject = subjectList.get(position);
 
+        // Set subject details
         holder.subjectName.setText(subject.getName());
         holder.subjectDetails.setText("Class: " + subject.getClassName() +
                 "\nSchedule: " + subject.getSchedule() +
                 "\nCredits: " + subject.getCredits());
-        holder.checkBox.setChecked(subject.isSelected());
 
-        // Listen for checkbox changes
-        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            subject.setSelected(isChecked);
-            listener.onSubjectCheckedChange(subject, isChecked);
-        });
+        // Update button visibility and behavior
+        if (subject.isEnrolled()) {
+            holder.enrollButton.setVisibility(View.GONE); // Hide button if already enrolled
+        } else {
+            holder.enrollButton.setVisibility(View.VISIBLE); // Show button if not enrolled
+            holder.enrollButton.setText("Enroll");
+
+            holder.enrollButton.setOnClickListener(v -> {
+                activity.onEnrollButtonClick(subject); // Enroll subject
+                notifyDataSetChanged(); // Refresh list to hide button after enrollment
+            });
+        }
     }
 
     @Override
@@ -57,13 +60,13 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView subjectName, subjectDetails;
-        CheckBox checkBox;
+        Button enrollButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             subjectName = itemView.findViewById(R.id.subjectName);
             subjectDetails = itemView.findViewById(R.id.subjectDetails);
-            checkBox = itemView.findViewById(R.id.subjectCheckBox);
+            enrollButton = itemView.findViewById(R.id.enrollButton);
         }
     }
 }

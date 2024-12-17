@@ -1,38 +1,25 @@
-<android.widget.LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Total Credits TextView (Top) -->
+    <!-- RecyclerView to display subjects -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false" />
+
+    <!-- Text view to show the total credits -->
     <TextView
         android:id="@+id/totalCreditsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Max Credits is 24."
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:text="Total Credits: 0"
+        android:textSize="18sp"
         android:layout_marginBottom="16dp" />
 
-    <!-- ScrollView for Subjects List (Middle) -->
-    <android.widget.ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:id="@+id/subjectsLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </android.widget.ScrollView>
-
-    <!-- Enroll Button (Bottom) -->
-    <Button
-        android:id="@+id/enrollButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Enroll Selected Subjects"
-        android:enabled="false" />
-
-</android.widget.LinearLayout>
+</LinearLayout>

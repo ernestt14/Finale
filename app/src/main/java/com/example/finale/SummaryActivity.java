@@ -1,6 +1,7 @@
 package com.example.finale;
 
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,21 +19,25 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SummaryActivity extends AppCompatActivity implements SubjectAdapter.OnSubjectCheckedListener {
+public class SummaryActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private SubjectAdapter subjectAdapter;
+    private SummarySubjectAdapter subjectAdapter;
     private List<Subject> subjectList = new ArrayList<>();
     private FirebaseAuth auth;
     private DatabaseReference databaseRef;
+    private DatabaseReference totalCreditsRef;
     private FirebaseUser currentUser;
+    private TextView totalCreditsText; // Declare TextView
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary);
 
+        // Initialize views
         recyclerView = findViewById(R.id.recyclerView);
+        totalCreditsText = findViewById(R.id.totalCreditsText); // Initialize TextView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize Firebase
@@ -46,10 +51,11 @@ public class SummaryActivity extends AppCompatActivity implements SubjectAdapter
             return;
         }
 
-        // Reference to the enrolled subjects for the current user
+        // Reference to the enrolled subjects and total credits for the current user
         databaseRef = FirebaseDatabase.getInstance().getReference("Enrollments").child(currentUser.getUid());
+        totalCreditsRef = FirebaseDatabase.getInstance().getReference("Enrollments").child(currentUser.getUid()).child("totalCredits");
 
-        // Fetch the enrolled subjects
+        // Fetch the enrolled subjects and total credits
         fetchEnrolledSubjects();
     }
 
@@ -61,19 +67,24 @@ public class SummaryActivity extends AppCompatActivity implements SubjectAdapter
                 if (snapshot.exists()) {
                     // Loop through the subjects in the database
                     for (DataSnapshot subjectSnapshot : snapshot.getChildren()) {
-                        String name = subjectSnapshot.child("name").getValue(String.class);
-                        int credits = subjectSnapshot.child("credits").getValue(Integer.class);
-                        String className = subjectSnapshot.child("className").getValue(String.class);
-                        String schedule = subjectSnapshot.child("schedule").getValue(String.class);
+                        if (!subjectSnapshot.getKey().equals("totalCredits")) {
+                            String name = subjectSnapshot.child("name").getValue(String.class);
+                            int credits = subjectSnapshot.child("credits").getValue(Integer.class);
+                            String className = subjectSnapshot.child("className").getValue(String.class);
+                            String schedule = subjectSnapshot.child("schedule").getValue(String.class);
 
-                        // Create Subject object and add to the list
-                        Subject subject = new Subject(name, credits, className, schedule);
-                        subjectList.add(subject);
+                            // Create Subject object and add to the list
+                            Subject subject = new Subject(name, credits, className, schedule);
+                            subjectList.add(subject);
+                        }
                     }
 
-                    // Set up the adapter with the list of enrolled subjects
-                    subjectAdapter = new SubjectAdapter(subjectList, SummaryActivity.this);
+                    // Set up the new adapter with the list of enrolled subjects
+                    subjectAdapter = new SummarySubjectAdapter(subjectList);
                     recyclerView.setAdapter(subjectAdapter);
+
+                    // Fetch and display the total credits
+                    fetchTotalCredits();
                 } else {
                     Toast.makeText(SummaryActivity.this, "No enrolled subjects found.", Toast.LENGTH_SHORT).show();
                 }
@@ -86,8 +97,19 @@ public class SummaryActivity extends AppCompatActivity implements SubjectAdapter
         });
     }
 
-    @Override
-    public void onSubjectCheckedChange(Subject subject, boolean isChecked) {
-        // Handle checkbox changes if necessary, like updating Firebase or UI
+    private void fetchTotalCredits() {
+        totalCreditsRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Integer credits = task.getResult().getValue(Integer.class);
+                if (credits != null) {
+                    // Display total credits in the UI
+                    if (totalCreditsText != null) {
+                        totalCreditsText.setText("Total Credits: " + credits);
+                    }
+                }
+            } else {
+                Toast.makeText(SummaryActivity.this, "Error fetching total credits.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

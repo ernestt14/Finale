@@ -25,11 +25,4 @@
         android:textSize="14sp"
         android:textColor="@android:color/black"
         android:layout_marginBottom="8dp"/>
-
-    <Button
-        android:id="@+id/enrollButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enroll"/>
-
 </LinearLayout>

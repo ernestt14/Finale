@@ -1,63 +1,43 @@
 package com.example.finale;
 
 public class Subject {
-
     private String name;
     private int credits;
     private String className;
     private String schedule;
-    private boolean isSelected;  // To track the selection state
+    private boolean isEnrolled;
 
-    public Subject() {
-        // Default constructor required for Firebase
-    }
-
+    // Constructor
     public Subject(String name, int credits, String className, String schedule) {
         this.name = name;
         this.credits = credits;
         this.className = className;
         this.schedule = schedule;
-        this.isSelected = false;  // By default, not selected
+        this.isEnrolled = false; // Default value
     }
 
+    // Getters and setters
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getCredits() {
         return credits;
     }
 
-    public void setCredits(int credits) {
-        this.credits = credits;
-    }
-
     public String getClassName() {
         return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
     }
 
     public String getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(String schedule) {
-        this.schedule = schedule;
+    public boolean isEnrolled() {
+        return isEnrolled;
     }
 
-    // Getter and setter for the selection state
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
+    public void setEnrolled(boolean enrolled) {
+        this.isEnrolled = enrolled;
     }
 }
