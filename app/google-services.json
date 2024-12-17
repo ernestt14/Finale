@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "794684627550",
+    "firebase_url": "https://wmpfinal-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "wmpfinal",
+    "storage_bucket": "wmpfinal.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794684627550:android:e7bed8c4669ecf2c4872cf",
+        "android_client_info": {
+          "package_name": "com.example.finale"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCs9cv3MEvonqg06X3UL1HtXkwZmrzihgw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
