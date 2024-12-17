@@ -46,7 +46,7 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
 
-        // Get reference to the database
+        // Get reference to the user's data in the database (e.g., Users node)
         databaseRef = FirebaseDatabase.getInstance().getReference("Students").child(currentUser.getUid());
 
         // Fetch and display the student's name
@@ -54,8 +54,13 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if (snapshot.exists()) {
+                    // Fetch name from the Users node
                     String name = snapshot.child("name").getValue(String.class);
-                    welcomeTextView.setText("Hello " + name);
+                    if (name != null) {
+                        welcomeTextView.setText("Hello " + name);
+                    } else {
+                        welcomeTextView.setText("Hello User");
+                    }
                 } else {
                     Toast.makeText(HomeActivity.this, "Failed to fetch user data", Toast.LENGTH_SHORT).show();
                 }

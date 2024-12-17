@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/rounded_background">
+
+    <!-- Subject Name TextView -->
+    <TextView
+        android:id="@+id/subjectName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Subject Name"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Subject Details TextView -->
+    <TextView
+        android:id="@+id/subjectDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Class: Room A\nSchedule: Mon 9:00 AM\nCredits: 3"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Checkbox to select subject -->
+    <CheckBox
+        android:id="@+id/subjectCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Subject"
+        android:layout_marginBottom="8dp"/>
+
+</LinearLayout>
