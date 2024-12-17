@@ -24,7 +24,6 @@ public class EnrollActivity extends AppCompatActivity {
     private TextView totalCreditsText;
     private FirebaseAuth auth;
     private DatabaseReference enrollmentsRef;
-    private DatabaseReference userCreditsRef;
     private List<Subject> subjectList = new ArrayList<>();
     private int totalCredits = 0;
     private SubjectAdapter adapter;
@@ -42,7 +41,6 @@ public class EnrollActivity extends AppCompatActivity {
         if (currentUser != null) {
             String userID = currentUser.getUid();
             enrollmentsRef = FirebaseDatabase.getInstance().getReference("Enrollments").child(userID);
-            userCreditsRef = FirebaseDatabase.getInstance().getReference("Users").child(userID).child("totalCredits");
         }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -53,20 +51,20 @@ public class EnrollActivity extends AppCompatActivity {
 
     private void loadSubjects() {
         String[][] subjects = {
-                        {"Math 101", "3", "Room A", "Mon 9:00 AM"},
-                        {"Physics 201", "4", "Room B", "Wed 11:00 AM"},
-                        {"Chemistry 301", "3", "Room C", "Fri 2:00 PM"},
-                        {"English 401", "2", "Room D", "Tue 11:00 AM"},
-                        {"Biology 102", "3", "Room E", "Mon 1:00 PM"},
-                        {"History 203", "3", "Room F", "Thu 3:00 PM"},
-                        {"Computer Science 202", "4", "Room G", "Tue 9:00 AM"},
-                        {"Psychology 301", "3", "Room H", "Fri 10:00 AM"},
-                        {"Sociology 202", "3", "Room I", "Wed 2:00 PM"},
-                        {"Economics 101", "3", "Room J", "Mon 3:00 PM"},
-                        {"Art 105", "2", "Room K", "Thu 1:00 PM"},
-                        {"Philosophy 110", "3", "Room L", "Fri 4:00 PM"},
-                        {"Music 203", "2", "Room M", "Tue 2:00 PM"},
-                        {"Political Science 201", "4", "Room N", "Wed 9:00 AM"}
+                {"Math 101", "3", "Room A", "Mon 9:00 AM"},
+                {"Physics 201", "4", "Room B", "Wed 11:00 AM"},
+                {"Chemistry 301", "3", "Room C", "Fri 2:00 PM"},
+                {"English 401", "2", "Room D", "Tue 11:00 AM"},
+                {"Biology 102", "3", "Room E", "Mon 1:00 PM"},
+                {"History 203", "3", "Room F", "Thu 3:00 PM"},
+                {"Computer Science 202", "4", "Room G", "Tue 9:00 AM"},
+                {"Psychology 301", "3", "Room H", "Fri 10:00 AM"},
+                {"Sociology 202", "3", "Room I", "Wed 2:00 PM"},
+                {"Economics 101", "3", "Room J", "Mon 3:00 PM"},
+                {"Art 105", "2", "Room K", "Thu 1:00 PM"},
+                {"Philosophy 110", "3", "Room L", "Fri 4:00 PM"},
+                {"Music 203", "2", "Room M", "Tue 2:00 PM"},
+                {"Political Science 201", "4", "Room N", "Wed 9:00 AM"}
         };
 
         for (String[] subject : subjects) {
@@ -104,13 +102,13 @@ public class EnrollActivity extends AppCompatActivity {
     }
 
     private void fetchTotalCredits() {
-        userCreditsRef.get().addOnCompleteListener(task -> {
+        enrollmentsRef.child("totalCredits").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 Integer credits = task.getResult().getValue(Integer.class);
                 totalCredits = (credits != null) ? credits : 0;
                 updateTotalCredits();
             } else {
-                Toast.makeText(EnrollActivity.this, "Failed to fetch credits", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EnrollActivity.this, "Failed to fetch total credits", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -126,10 +124,7 @@ public class EnrollActivity extends AppCompatActivity {
 
             // Save the enrolled subject to the "Enrollments" node
             enrollmentsRef.child(subject.getName()).setValue(subject);
-            // Save the total credits under the "Users" node
-            userCreditsRef.setValue(totalCredits);
-
-            // Also update the "Enrollments" node with total credits
+            // Save the total credits under the "Enrollments" node
             enrollmentsRef.child("totalCredits").setValue(totalCredits);
 
             Toast.makeText(this, subject.getName() + " enrolled!", Toast.LENGTH_SHORT).show();
