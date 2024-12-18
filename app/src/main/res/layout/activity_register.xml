@@ -2,38 +2,56 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="24dp"
+    android:background="#FAFAFA">
 
     <EditText
         android:id="@+id/nameRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Full Name" />
+        android:hint="Full Name"
+        android:padding="12dp"
+        android:background="@drawable/rounded_edit_text"
+        android:layout_marginBottom="16dp" />
 
     <EditText
         android:id="@+id/emailRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email" />
+        android:hint="Email"
+        android:padding="12dp"
+        android:background="@drawable/rounded_edit_text"
+        android:layout_marginBottom="16dp" />
 
     <EditText
         android:id="@+id/passwordRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:padding="12dp"
+        android:background="@drawable/rounded_edit_text"
+        android:layout_marginBottom="24dp" />
 
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register" />
+        android:text="Register"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#2196F3"
+        android:layout_marginBottom="16dp"
+        android:paddingVertical="12dp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvLoginLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Already have an account? Login here"
-        android:textColor="#2196F3" />
+        android:textColor="#2196F3"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp" />
 
 </LinearLayout>
